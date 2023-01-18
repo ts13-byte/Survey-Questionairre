@@ -3,7 +3,7 @@ package com.company.example.RestAPI.survey;
 import java.util.List;
 
 public class Question {
-private String id;;
+private String id;
 private String description;
 private List<String> options;
 private String correctAnswer;

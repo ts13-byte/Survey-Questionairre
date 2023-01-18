@@ -1,5 +1,7 @@
 package com.company.example.RestAPI.survey;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,13 +37,51 @@ public class SurveyService {
 		return surveys;
 	}
 
-	public Survey retrieveSurveyById(String id) {
+	public Survey retrieveSurveyById(String surveyId) {
 		// TODO Auto-generated method stub
-		Predicate<? super Survey> predicate = survey -> survey.getId().equals(id);
+		Predicate<? super Survey> predicate = survey -> survey.getId().equalsIgnoreCase(surveyId);
 		Optional<Survey> optionalsurvey = surveys.stream().filter(predicate).findFirst();
 		if (optionalsurvey.isEmpty())
 			return null;
 		return optionalsurvey.get();
+	}
+
+	public List<Question> retrieveSurveyQues(String surveyId) {
+		// TODO Auto-generated method stub
+		Survey survey = retrieveSurveyById(surveyId);
+		if (survey == null)
+			return null;
+		return survey.getQuestions();
+	}
+
+	public Question retrieveSurveyQuesById(String surveyId, String questionId) {
+		// TODO Auto-generated method stub
+		Survey survey = retrieveSurveyById(surveyId);
+		if (survey == null)
+			return null;
+		List<Question> questions = survey.getQuestions();
+		Predicate<? super Question> predicate = question -> question.getId().equalsIgnoreCase(questionId);
+		Optional<Question> optionalsurvey = questions.stream().filter(predicate).findFirst();
+		if (optionalsurvey.isEmpty())
+			return null;
+		return optionalsurvey.get();
+
+	}
+
+	public String addNewSurveyQuestion(String surveyId, Question question) {
+		// TODO Auto-generated method stub
+		List<Question> questions = retrieveSurveyQues(surveyId);
+		String randomId = generateRandomId();
+		question.setId(randomId);
+		questions.add(question);
+		return question.getId();
+
+	}
+
+	private String generateRandomId() {
+		SecureRandom secureRandom = new SecureRandom();
+		String randomId = new BigInteger(32, secureRandom).toString();
+		return randomId;
 	}
 
 }
