@@ -84,4 +84,19 @@ public class SurveyService {
 		return randomId;
 	}
 
+	public void deleteSurveyQuestion(String surveyId, String questionId) {
+		// TODO Auto-generated method stub
+		List<Question> surveyQuestions = retrieveSurveyQues(surveyId);
+		Predicate<? super Question> predicate = question -> question.getId().equalsIgnoreCase(questionId);
+		surveyQuestions.removeIf(predicate);
+
+	}
+
+	public void updateSurveyQuestion(String surveyId, String questionId, Question question) {
+		// TODO Auto-generated method stub
+		List<Question> surveyQuestions = retrieveSurveyQues(surveyId);
+		Predicate<? super Question> predicate = q -> q.getId().equalsIgnoreCase(questionId);
+		surveyQuestions.removeIf(predicate);
+		surveyQuestions.add(question);
+	}
 }
